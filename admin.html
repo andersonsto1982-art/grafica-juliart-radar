@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Painel Administrativo | Radar de Ofertas</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="pagina-admin">
+
+  <!-- Cabeçalho -->
+  <header class="admin-header">
+
+    <div class="admin-logo">
+      <span class="admin-logo-icon">🛒</span>
+
+      <div>
+        <h1>Radar de Ofertas</h1>
+        <p>Painel administrativo</p>
+      </div>
+    </div>
+
+    <a href="index.html" class="voltar-vitrine">
+      ← Ver vitrine
+    </a>
+
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="admin-container">
+
+    <!-- Cadastro de produtos -->
+    <section class="admin-card" id="painel">
+
+      <h2>＋ Cadastrar novo produto</h2>
+
+      <p>Adicione produtos à vitrine do Radar de Ofertas.</p>
+
+      <form id="form-produto">
+
+        <label for="nome-produto">
+          Nome do produto
+        </label>
+        <input
+          id="nome-produto"
+          type="text"
+          placeholder="Ex.: Fone Bluetooth"
+          required
+        >
+
+        <label for="categoria-produto">
+          Categoria
+        </label>
+        <select id="categoria-produto" required>
+          <option value="">Selecione uma categoria</option>
+          <option>Eletrônicos</option>
+          <option>Casa e utilidades</option>
+          <option>Tecnologia</option>
+          <option>Beleza</option>
+          <option>Moda</option>
+          <option>Acessórios</option>
+        </select>
+
+        <label for="preco-produto">
+          Preço atual (R$)
+        </label>
+        <input
+          id="preco-produto"
+          type="number"
+          step="0.01"
+          min="0.01"
+          placeholder="52.40"
+          required
+        >
+
+        <label for="preco-antigo-produto">
+          Preço antigo (R$)
+        </label>
+        <input
+          id="preco-antigo-produto"
+          type="number"
+          step="0.01"
+          min="0"
+          placeholder="Opcional"
+        >
+
+        <label for="imagem-produto">
+          Link da imagem
+        </label>
+        <input
+          id="imagem-produto"
+          type="url"
+          placeholder="https://..."
+          required
+        >
+
+        <label for="link-produto">
+          Link da loja ou afiliado
+        </label>
+        <input
+          id="link-produto"
+          type="url"
+          placeholder="https://..."
+          required
+        >
+
+        <button type="submit">
+          + Cadastrar produto
+        </button>
+
+      </form>
+
+      <p id="mensagem-cadastro" aria-live="polite"></p>
+
+    </section>
+
+    <!-- Gerenciamento de produtos -->
+    <section class="admin-card">
+      <h2>☷ Produtos cadastrados</h2>
+      <p>Edite ou remova produtos da sua vitrine.</p>
+
+      <!-- Indicadores do painel -->
+      <div class="indicadores-admin">
+        <div class="indicador">
+          <span>📦</span>
+          <h3 id="total-produtos">0</h3>
+          <p>Produtos cadastrados</p>
+        </div>
+
+        <div class="indicador">
+          <span>🗂️</span>
+          <h3 id="total-categorias">0</h3>
+          <p>Categorias</p>
+        </div>
+
+        <div class="indicador">
+          <span>🔥</span>
+          <h3 id="total-ofertas">0</h3>
+          <p>Ofertas em destaque</p>
+        </div>
+      </div>
+
+      <!-- Busca e filtros unificados -->
+      <div class="controles-admin">
+        <input
+          type="search"
+          id="busca-admin"
+          placeholder="🔎 Buscar produto pelo nome ou categoria..."
+          autocomplete="off"
+        >
+
+        <select id="filtro-admin">
+          <option value="todos">Todas as categorias</option>
+          <option value="Eletrônicos">Eletrônicos</option>
+          <option value="Casa e utilidades">Casa e utilidades</option>
+          <option value="Tecnologia">Tecnologia</option>
+          <option value="Beleza">Beleza</option>
+          <option value="Moda">Moda</option>
+          <option value="Acessórios">Acessórios</option>
+        </select>
+      </div>
+
+      <div id="lista-produtos-admin">
+        <!-- Os produtos serão carregados pelo JavaScript -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
