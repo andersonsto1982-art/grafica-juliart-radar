@@ -2,6 +2,15 @@
 const produtosIniciais = [
 
   {
+    nome: "Short Feminino Coloridos Curto Brim C/lycra Super Barato !!",
+    categoria: "Moda",
+    precoAntigo: 48.90,
+    preco: 37.00,
+    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_716376-MLB84696830007_052025-F-short-feminino-coloridos-curto-brim-clycra-super-barato-.webp",
+    link: "https://meli.la/2M8CHSF"
+  },
+
+  {
     nome: "Short Jeans Feminino Cintura Alta Cargo Com Lycra Hot Pants",
     categoria: "Moda",
     destaque: "mais-vendido",
@@ -10,7 +19,6 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_948104-MLB109564214718_042026-F-short-jeans-feminino-cintura-alta-cargo-com-lycra-hot-pants.webp",
     link: "https://meli.la/2hiGvs4",
   },
-
   {
     nome: "Fone Bluetooth",
     categoria: "Eletrônicos",
@@ -50,6 +58,7 @@ const produtosIniciais = [
   {
     nome: "Camisa masculina",
     categoria: "Moda",
+    destaque: "",
     precoAntigo: 69.90,
     preco: 49.99,
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_712030-MLB106037837590_022026-F-kit2-camiseta-max-titanium-dry-fit-treino-camisa-fitness.webp",
@@ -102,7 +111,7 @@ const produtosIniciais = [
   }
 ];
 
-// Recupera ou inicializa o catálogo do localStorage
+// Recupera ou inicializa o catálogo do localStorage com sincronização inteligente
 let produtos = [];
 
 function carregarProdutos() {
@@ -116,14 +125,28 @@ function carregarProdutos() {
     }
   }
 
-  // Se o repositório estiver vazio, carrega os iniciais com IDs válidos
+  // Garante que novos produtos adicionados diretamente no array produtosIniciais
+  // apareçam automaticamente sem apagar os cadastrados pelo painel.
+  produtosIniciais.forEach((itemInicial, indice) => {
+    const idBase = "base-" + indice;
+    const jaExiste = produtos.some(p => p.id === idBase || p.nome === itemInicial.nome);
+    
+    if (!jaExiste && itemInicial.nome) {
+      produtos.unshift({ ...itemInicial, id: idBase });
+    }
+  });
+
+  // Se o repositório estiver completamente vazio, inicializa com a lista base
   if (!produtos || produtos.length === 0) {
-    produtos = produtosIniciais.map((produto, indice) => ({
-      ...produto,
-      id: "base-" + indice
-    }));
-    salvarCatalogo();
+    produtos = produtosIniciais
+      .filter(p => p.nome && p.nome.trim() !== "")
+      .map((produto, indice) => ({
+        ...produto,
+        id: "base-" + indice
+      }));
   }
+
+  salvarCatalogo();
 }
 
 // Salva o catálogo completo no localStorage
@@ -363,13 +386,11 @@ if (formulario) {
       const leitor = new FileReader();
       
       leitor.onload = function(e) {
-        // Converte a imagem local em texto Base64 para armazenar no localStorage
         finalizarCadastro(e.target.result);
       };
 
       leitor.readAsDataURL(inputArquivo.files[0]);
     } else {
-      // Se não enviou arquivo local, usa o link digitado
       finalizarCadastro(inputUrl);
     }
   });
