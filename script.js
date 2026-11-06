@@ -1,6 +1,5 @@
-// Inicialização do catálogo de produtos
+// Inicialização do catálogo de produtos base
 const produtosIniciais = [
-  
   {
     nome: "Fone Bluetooth",
     categoria: "Eletrônicos",
@@ -10,7 +9,6 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_980288-MLA99966340125_112025-F.webp",
     link: "https://meli.la/1wBAeDX"
   },
-
   {
     nome: "Garrafa Térmica",
     categoria: "Casa e utilidades",
@@ -20,7 +18,6 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_774036-MLB116796134441_082026-F-garrafa-termica-800ml-inox-bico-duplo-canudo-alca-esporte.webp",
     link: "https://meli.la/2zZCETi"
   },
-
   {
     nome: "Playstation 5",
     categoria: "Eletrônicos",
@@ -30,27 +27,15 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_667226-MLA96871260244_112025-F.webp",
     link: "https://meli.la/1FWhLdU"
   },
-
-  {
-    nome: "Acessórios para celular",
-    categoria: "Acessórios",
-    destaque: "menor-preco",
-    precoAntigo: 22.99,
-    preco: 21.61,
-    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_606172-MLB95043599263_102025-F-capa-capinha-pelicula-3d-para-iphone-16e-anti-impacto-queda.webp",
-    link: "https://meli.la/2GZZy1x"
-  },
-
   {
     nome: "Smartwatch",
     categoria: "Eletrônicos",
     destaque: "oferta",
     precoAntigo: 257.55,
     preco: 77.26,
-    imagem:"https://http2.mlstatic.com/D_NQ_NP_2X_909579-MLA97334242395_112025-F.webp",
+    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_909579-MLA97334242395_112025-F.webp",
     link: "https://meli.la/16m2SvD"
   },
-
   {
     nome: "Camisa masculina",
     categoria: "Moda",
@@ -59,7 +44,6 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_712030-MLB106037837590_022026-F-kit2-camiseta-max-titanium-dry-fit-treino-camisa-fitness.webp",
     link: "https://meli.la/1rDhyEU"
   },
-
   {
     nome: "Playstation 5 Slim Disc",
     categoria: "Eletrônicos",
@@ -69,7 +53,6 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_866182-MLA117154059437_092026-F.webp",
     link: "https://meli.la/1GSNx4e"
   },
-
   {
     nome: "Console De Jogos Hyperkin Retron 2 Hd",
     categoria: "Eletrônicos",
@@ -78,8 +61,7 @@ const produtosIniciais = [
     preco: 660.80,
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_912413-CBT118228041044_102026-F.webp",
     link: "https://meli.la/2KUvR8e"
-  }, 
-
+  },
   {
     nome: "Calça Jeans Wide Leg Feminina Cintura Alta Sem Lycra Stillge",
     categoria: "Moda",
@@ -89,7 +71,6 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_717613-MLB96633630079_102025-F-calca-jeans-wide-leg-feminina-cintura-alta-sem-lycra-stillge.webp",
     link: "https://meli.la/1hj726n"
   },
-
   {
     nome: "Calça Jeans Masculina Tradicional Corte Reto",
     categoria: "Moda",
@@ -99,7 +80,6 @@ const produtosIniciais = [
     imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_996599-MLB88495135003_072025-F-calca-jeans-masculina-tradicional-corte-reto.webp",
     link: "https://meli.la/2NqBiZE"
   },
-
   {
     nome: "Vestido Longo Casual Festa Alça Grossa Fenda Moda Elegante",
     categoria: "Moda",
@@ -111,43 +91,37 @@ const produtosIniciais = [
   }
 ];
 
-// Recupera o catálogo completo do localStorage
-const catalogoSalvo = localStorage.getItem("radarCatalogo");
+// Recupera ou inicializa o catálogo do localStorage
+let produtos = [];
 
-let produtos;
+function carregarProdutos() {
+  const catalogoSalvo = localStorage.getItem("radarCatalogo");
 
-if (catalogoSalvo) {
-  produtos = JSON.parse(catalogoSalvo);
-} else {
-  const produtosExtras = JSON.parse(
-    localStorage.getItem("produtosRadar") || "[]"
-  );
+  if (catalogoSalvo) {
+    try {
+      produtos = JSON.parse(catalogoSalvo);
+    } catch (e) {
+      produtos = [];
+    }
+  }
 
-  produtos = [
-    ...produtosIniciais.map((produto, indice) => ({
+  // Se o repositório estiver vazio, carrega os iniciais com IDs válidos
+  if (!produtos || produtos.length === 0) {
+    produtos = produtosIniciais.map((produto, indice) => ({
       ...produto,
       id: "base-" + indice
-    })),
-
-    ...produtosExtras.map((produto, indice) => ({
-      ...produto,
-      id: produto.id || "extra-" + indice
-    }))
-  ];
-
-  localStorage.setItem(
-    "radarCatalogo",
-    JSON.stringify(produtos)
-  );
+    }));
+    salvarCatalogo();
+  }
 }
 
 // Salva o catálogo completo no localStorage
 function salvarCatalogo() {
-  localStorage.setItem(
-    "radarCatalogo",
-    JSON.stringify(produtos)
-  );
+  localStorage.setItem("radarCatalogo", JSON.stringify(produtos));
 }
+
+// Carrega os produtos ao iniciar o script
+carregarProdutos();
 
 const vitrine = document.getElementById("produtos");
 const busca = document.getElementById("busca");
@@ -155,7 +129,7 @@ const mensagem = document.getElementById("sem-resultados");
 
 // Formata o preço em reais
 function formatarPreco(valor) {
-  return valor.toLocaleString("pt-BR", {
+  return Number(valor).toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL"
   });
@@ -211,7 +185,7 @@ function criarCartao(produto) {
   const desconto = document.createElement("span");
   desconto.className = "desconto";
 
-  if (produto.precoAntigo && produto.precoAntigo > produto.preco) {
+  if (produto.precoAntigo && Number(produto.precoAntigo) > Number(produto.preco)) {
     precoAntigo.textContent = "De: " + formatarPreco(produto.precoAntigo);
     desconto.textContent = calcularDesconto(produto.precoAntigo, produto.preco) + "% OFF";
   } else {
@@ -240,7 +214,7 @@ function criarCartao(produto) {
   return card;
 }
 
-// Mostrar produtos na página (Vitrine)
+// Mostrar produtos na vitrine
 function mostrarProdutos(lista) {
   if (!vitrine) return;
 
@@ -260,7 +234,7 @@ let categoriaSelecionada = "todos";
 
 // Normaliza os textos para facilitar a comparação (remove acentos)
 function normalizar(texto) {
-  return texto
+  return (texto || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
@@ -269,8 +243,7 @@ function normalizar(texto) {
 
 // Filtra por categoria e busca na vitrine
 function filtrarProdutos() {
-  if (!busca) return;
-  const termo = normalizar(busca.value);
+  const termo = busca ? normalizar(busca.value) : "";
 
   const resultado = produtos.filter(function(produto) {
     const correspondeCategoria =
@@ -305,7 +278,7 @@ if (busca) {
   busca.addEventListener("input", filtrarProdutos);
 }
 
-// Inicializa a vitrine (caso o elemento exista na página)
+// Inicializa a vitrine
 if (vitrine) {
   mostrarProdutos(produtos);
 }
@@ -318,13 +291,11 @@ if (formulario) {
   formulario.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const precoAtual = Number(
-      document.getElementById("preco-produto").value
-    );
+    const precoAtualVal = document.getElementById("preco-produto").value;
+    const precoAntigoVal = document.getElementById("preco-antigo-produto").value;
 
-    const precoAntigo = Number(
-      document.getElementById("preco-antigo-produto").value
-    );
+    const precoAtual = Number(precoAtualVal);
+    const precoAntigo = precoAntigoVal ? Number(precoAntigoVal) : 0;
 
     if (!Number.isFinite(precoAtual) || precoAtual <= 0) {
       if (mensagemCadastro) mensagemCadastro.textContent = "Informe um preço válido.";
@@ -394,22 +365,20 @@ function renderizarAdmin() {
 
   lista.replaceChildren();
 
-  // Captura o texto digitado na busca do admin
+  // Captura os filtros do admin
   const campoBusca = document.getElementById("busca-admin");
   const termo = campoBusca ? normalizar(campoBusca.value) : "";
 
-  // Captura o filtro de categoria do admin
   const filtroCategoria = document.getElementById("filtro-admin");
   const categoriaAdmin = filtroCategoria ? filtroCategoria.value : "todos";
 
-  // Filtra pelo nome ou categoria no admin
+  // Filtra lista para o admin
   const produtosFiltrados = produtos.filter(function(produto) {
     const textoProduto = normalizar(
       produto.nome + " " + produto.categoria
     );
 
     const correspondeBusca = textoProduto.includes(termo);
-
     const correspondeCategoria =
       categoriaAdmin === "todos" ||
       normalizar(produto.categoria) === normalizar(categoriaAdmin);
@@ -475,7 +444,7 @@ function renderizarAdmin() {
   });
 }
 
-// Configuração correta dos eventos do painel administrativo (Fora de loops ou funções de renderização)
+// Configuração dos eventos do painel administrativo
 const buscaAdmin = document.getElementById("busca-admin");
 if (buscaAdmin) {
   buscaAdmin.addEventListener("input", renderizarAdmin);
@@ -512,8 +481,8 @@ function editarProduto(id) {
   const novoLink = prompt("Link da loja:", produto.link);
   if (novoLink === null) return;
 
-  const preco = Number(novoPreco.replace(",", "."));
-  const precoAntigo = Number(novoPrecoAntigo.replace(",", "."));
+  const preco = Number(String(novoPreco).replace(",", "."));
+  const precoAntigo = Number(String(novoPrecoAntigo).replace(",", "."));
 
   if (!novoNome.trim() || !novaCategoria.trim() ||
       !Number.isFinite(preco) || preco <= 0 ||
@@ -561,5 +530,5 @@ function excluirProduto(id) {
   }
 }
 
-// Inicializa o painel administrativo caso ele esteja presente na página atual
+// Inicializa o painel administrativo
 renderizarAdmin();
