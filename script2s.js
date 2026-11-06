@@ -2,6 +2,15 @@
 const produtosIniciais = [
 
   {
+    nome: "Placa De Vídeo Rx 580 8gb Revenger 2048 Stream Processors 4k",
+    categoria: "Tecnologia",
+    precoAntigo: 1008.00,
+    preco: 867.00,
+    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_967419-MLB118147688546_102026-F.webp",
+    link: "https://meli.la/1gzoysL"
+  },
+
+  {
     nome: "Bracelete Coração Aço Inox 316 Para Presente Feminino",
     categoria: "Moda",
     precoAntigo: 49.00,
