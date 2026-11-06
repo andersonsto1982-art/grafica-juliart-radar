@@ -65,6 +65,17 @@
           <option>Acessórios</option>
         </select>
 
+        <label for="destaque-produto">
+          Etiqueta / Destaque do produto
+        </label>
+        <select id="destaque-produto">
+          <option value="">Nenhuma etiqueta (Padrão)</option>
+          <option value="oferta">🔥 OFERTA DO DIA</option>
+          <option value="mais-vendido">⭐ MAIS VENDIDO</option>
+          <option value="menor-preco">💰 MENOR PREÇO</option>
+          <option value="novidade">NOVIDADE</option>
+        </select>
+
         <label for="preco-produto">
           Preço atual (R$)
         </label>
@@ -88,15 +99,30 @@
           placeholder="Opcional"
         >
 
-        <label for="imagem-produto">
-          Link da imagem
-        </label>
-        <input
-          id="imagem-produto"
-          type="url"
-          placeholder="https://..."
-          required
-        >
+        <!-- Opção de Imagem (Upload local ou Link) -->
+        <fieldset style="border: 1px solid #ccc; padding: 10px; border-radius: 6px; margin-bottom: 15px;">
+          <legend style="padding: 0 5px; font-weight: bold;">Imagem do Produto</legend>
+          
+          <label for="imagem-arquivo">
+            📂 Enviar imagem do computador (Opcional):
+          </label>
+          <input
+            id="imagem-arquivo"
+            type="file"
+            accept="image/*"
+          >
+
+          <p style="margin: 8px 0; text-align: center; font-size: 13px; color: #666;">OU</p>
+
+          <label for="imagem-produto">
+            🔗 Link da imagem (URL):
+          </label>
+          <input
+            id="imagem-produto"
+            type="url"
+            placeholder="https://..."
+          >
+        </fieldset>
 
         <label for="link-produto">
           Link da loja ou afiliado

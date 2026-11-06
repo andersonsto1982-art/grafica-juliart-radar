@@ -1,5 +1,16 @@
 // Inicialização do catálogo de produtos base
 const produtosIniciais = [
+
+  {
+    nome: "Short Jeans Feminino Cintura Alta Cargo Com Lycra Hot Pants",
+    categoria: "Moda",
+    destaque: "mais-vendido",
+    precoAntigo: 69.90,
+    preco: 49.86,
+    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_948104-MLB109564214718_042026-F-short-jeans-feminino-cintura-alta-cargo-com-lycra-hot-pants.webp",
+    link: "https://meli.la/2hiGvs4",
+  },
+
   {
     nome: "Fone Bluetooth",
     categoria: "Eletrônicos",
@@ -302,34 +313,65 @@ if (formulario) {
       return;
     }
 
-    const novoProduto = {
-      id: "produto-" + Date.now(),
-      nome: document.getElementById("nome-produto").value.trim(),
-      categoria: document.getElementById("categoria-produto").value,
-      preco: precoAtual,
-      imagem: document.getElementById("imagem-produto").value.trim(),
-      link: document.getElementById("link-produto").value.trim()
-    };
+    const nome = document.getElementById("nome-produto").value.trim();
+    const categoria = document.getElementById("categoria-produto").value;
+    const destaque = document.getElementById("destaque-produto").value;
+    const linkLoja = document.getElementById("link-produto").value.trim();
+    const inputArquivo = document.getElementById("imagem-arquivo");
+    const inputUrl = document.getElementById("imagem-produto").value.trim();
 
-    if (!novoProduto.nome || !novoProduto.categoria) {
+    if (!nome || !categoria) {
       if (mensagemCadastro) mensagemCadastro.textContent = "Preencha os campos obrigatórios.";
       return;
     }
 
-    if (precoAntigo > precoAtual) {
-      novoProduto.precoAntigo = precoAntigo;
+    // Função auxiliar para salvar e finalizar o cadastro com a imagem escolhida
+    function finalizarCadastro(urlImagemFinal) {
+      if (!urlImagemFinal) {
+        if (mensagemCadastro) mensagemCadastro.textContent = "Informe um link de imagem ou selecione um arquivo do computador.";
+        return;
+      }
+
+      const novoProduto = {
+        id: "produto-" + Date.now(),
+        nome: nome,
+        categoria: categoria,
+        destaque: destaque,
+        preco: precoAtual,
+        imagem: urlImagemFinal,
+        link: linkLoja
+      };
+
+      if (precoAntigo > precoAtual) {
+        novoProduto.precoAntigo = precoAntigo;
+      }
+
+      produtos.push(novoProduto);
+      salvarCatalogo();
+
+      formulario.reset();
+
+      if (mensagemCadastro) {
+        mensagemCadastro.textContent = "Produto cadastrado com sucesso! 🎉";
+      }
+
+      renderizarAdmin();
     }
 
-    produtos.push(novoProduto);
-    salvarCatalogo();
+    // Verifica se o usuário escolheu um arquivo local ou usou uma URL
+    if (inputArquivo.files && inputArquivo.files[0]) {
+      const leitor = new FileReader();
+      
+      leitor.onload = function(e) {
+        // Converte a imagem local em texto Base64 para armazenar no localStorage
+        finalizarCadastro(e.target.result);
+      };
 
-    formulario.reset();
-
-    if (mensagemCadastro) {
-      mensagemCadastro.textContent = "Produto cadastrado com sucesso! 🎉";
+      leitor.readAsDataURL(inputArquivo.files[0]);
+    } else {
+      // Se não enviou arquivo local, usa o link digitado
+      finalizarCadastro(inputUrl);
     }
-
-    renderizarAdmin();
   });
 }
 
