@@ -2,6 +2,15 @@
 const produtosIniciais = [
 
   {
+    nome: "Bracelete Coração Aço Inox 316 Para Presente Feminino",
+    categoria: "Moda",
+    precoAntigo: 49.00,
+    preco: 25.83,
+    imagem: "https://http2.mlstatic.com/D_NQ_NP_2X_617750-MLB81813165427_012025-F-bracelete-coraco-aco-inox-316-para-presente-feminino.webp",
+    link: "https://meli.la/2vf1FGm"
+  },
+
+  {
     nome: "Short Feminino Coloridos Curto Brim C/lycra Super Barato !!",
     categoria: "Moda",
     precoAntigo: 48.90,
